@@ -67,7 +67,6 @@ export function getComponentParents(instance, api: DevtoolsApi, ctx: BackendCont
   const parents = []
   captureId(instance)
   let parent = instance
-  // eslint-disable-next-line no-cond-assign
   while ((parent = parent.$parent)) {
     captureId(parent)
     parents.push(parent)

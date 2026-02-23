@@ -17,22 +17,6 @@ import { PopupManager } from "../../ui/popup/PopupManager";
 import { JavaUtils } from "../../utils/JavaUtils";
 import { UnityUtils } from "../../utils/UnityUtils";
 
-// SHITCODE ALERT!
-
-/*
- * 1. Hook PerformLoginFlow:
- *    We are pausing the game's attempt to log in.
- *    Instead of logging in, we show an Input Popup to the user.
- *
- * 2. Access Token:
- *    User pastes a Refresh Token -> We send HTTP POST to Constants.TOKEN_URL -> We get a valid Access Token to login.
- *
- * 3. Resume:
- *    We call the original PerformLoginFlow again, see resumeLogin() (with a flag to avoid infinite loops).
- *    BuildLoginRequest hook for change our token
- *
- * Thx floyzi
- */
 
 export class TokenLoginModule extends BaseModule {
     public readonly name = "TokenLogin";
