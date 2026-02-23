@@ -217,10 +217,10 @@
 
 ## Risk Levels
 
-- `critical` - Direct path to root
-- `high` - Exploitable with known techniques
-- `medium` - Requires chaining or conditions
-- `low` - Informational
+- `critical` : Direct path to root
+- `high` : Exploitable with known techniques
+- `medium` : Requires chaining or conditions
+- `low` : Informational
 
 ## Stats
 
