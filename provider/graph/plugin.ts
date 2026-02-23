@@ -16,9 +16,6 @@ const VUEX_ROOT_PATH = '__vdt_root'
 const VUEX_MODULE_PATH_SEPARATOR = '[vdt]'
 const VUEX_MODULE_PATH_SEPARATOR_REG = /\[vdt\]/g
 
-/**
- * Extracted from tailwind palette
- */
 const BLUE_600 = 0x2563EB
 const LIME_500 = 0x84CC16
 const CYAN_400 = 0x22D3EE

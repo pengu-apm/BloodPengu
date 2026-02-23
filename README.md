@@ -20,7 +20,7 @@ BloodPengu is considered to be Properties under [AdverXarial](https://byt3n33dl3
 
 ## Documentation
 
-- [BloodPengu Documentation](https://pengu-apm.github.io/)
+- [BloodPengu Documentation](https://pengu-apm.github.io/pengu-apm/)
 - [BloodPengu Usage Set-Up](https://github.com/pengu-apm/BloodPengu/blob/main/INSTALL.md)
 
 ## LICENSING
@@ -50,4 +50,4 @@ And other LICENSES.
 
 ## CONTACT
 
-For more, come to the documentation for use cases and write-ups [here](https://pengu-apm.github.io), if there's any security concern, please contact me at <byt3n33dl3@pm.me>
+For more, come to the documentation for use cases and write-ups [here](https://pengu-apm.github.io/pengu-apm/), if there's any security concern, please contact me at <byt3n33dl3@pm.me>
