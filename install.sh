@@ -21,7 +21,7 @@ cp -r static "$INSTALL_DIR/"
 cp server/bloodpengu-daemon.go "$INSTALL_DIR/main.go"
 cp static/login.html "$INSTALL_DIR/static/"
 cp static/js/auth-check.js "$INSTALL_DIR/static/js/"
-mv "$INSTALL_DIR/static/index.html" "$INSTALL_DIR/static/index.html"
+mv "$INSTALL_DIR/static/index.html" "$INSTALL_DIR/static/index-run.html"
 cp static/index.html "$INSTALL_DIR/static/index.html"
 
 echo "[+] Building..."
