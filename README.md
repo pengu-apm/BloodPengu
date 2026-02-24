@@ -1,6 +1,6 @@
 <p align="center">
     <picture>
-        <img src="./static/images/pengu_logo.png" alt="BloodPengu Project" width='300'/>
+        <img src="./static/images/pengu_logo_nobg.png" alt="BloodPengu Project" width='300'/>
     </picture>
 </p>
 
