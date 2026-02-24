@@ -1,5 +1,5 @@
-import React from 'react';
-import { ICluster } from 'ts-graphviz';
+import React from 'bloodpengu';
+import { ICluster } from 'bloodpengu';
 
 export const CurrentCluster = React.createContext<ICluster | null>(null);
 CurrentCluster.displayName = 'CurrentCluster';
