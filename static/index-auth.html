@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BloodPengu</title>
+<link rel="stylesheet" href="css/bloodpengu.css">
+<script src="js/auth-check.js"></script>
+</head>
+<body>
+<div id="app">
+<div id="sidebar">
+<div id="sb">
+<div id="sh">
+<div id="logo">
+<img src="images/logo-pengu.png" alt="BloodPengu">
+<h1>BloodPengu</h1>
+<p>LINUX PRIVESC ANALYZER</p>
+</div>
+<div id="mb">
+<div id="mh"><span id="stxt">No data loaded</span><span id="sdot"></span></div>
+<div id="ms">
+<div class="msr"><span class="msl">PATHS TO ROOT</span><span class="msv" id="sp">0</span></div>
+<div class="msr"><span class="msl">NODES</span><span class="msv" id="sn">0</span></div>
+<div class="msr"><span class="msl">EDGES</span><span class="msv" id="se">0</span></div>
+<div class="msr"><span class="msl">CRITICAL</span><span class="msv c" id="sc2">0</span></div>
+</div>
+</div>
+</div>
+<div id="sc">
+<div class="ssh">ATTACK QUERIES</div>
+<div class="ssc">
+<button class="qb" data-query="all" id="q-all"><img src="images/icons/icon-query-map.png">All Paths to Root <span class="qc" id="qc-a">-</span></button>
+<button class="qb" data-query="shortest" id="q-shortest"><img src="images/icons/icon-query-bolt.png">Shortest to Root <span class="qc" id="qc-s">-</span></button>
+<button class="qb" data-query="sudo" id="q-sudo"><img src="images/icons/icon-query-key.png">Sudo Misconfigs <span class="qc" id="qc-su">-</span></button>
+<button class="qb" data-query="suid" id="q-suid"><img src="images/icons/icon-query-pin.png">SUID Binaries <span class="qc" id="qc-si">-</span></button>
+<button class="qb" data-query="docker" id="q-docker"><img src="images/icons/icon-query-docker.png">Docker Escapes <span class="qc" id="qc-d">-</span></button>
+<button class="qb" data-query="service" id="q-service"><img src="images/icons/icon-query-gear.png">Writable Services <span class="qc" id="qc-sv">-</span></button>
+<button class="qb" data-query="cron" id="q-cron"><img src="images/icons/icon-query-clock.png">Writable Crons <span class="qc" id="qc-cr">-</span></button>
+<button class="qb" data-query="kernel" id="q-kernel"><img src="images/icons/icon-query-skull.png">Kernel Exploits <span class="qc" id="qc-k">-</span></button>
+<button class="qb" id="reset-btn"><img src="images/icons/icon-query-reset.png">Reset View</button>
+</div>
+<div class="ssh">NODE TYPES</div>
+<div class="ssc">
+<button class="qb" data-filter="user"><img src="images/nodes/node-user.png">Users <span class="qc" id="cn-u">-</span></button>
+<button class="qb" data-filter="group"><img src="images/nodes/node-group.png">Groups <span class="qc" id="cn-g">-</span></button>
+<button class="qb" data-filter="binary"><img src="images/nodes/node-binary.png">Binaries <span class="qc" id="cn-b">-</span></button>
+<button class="qb" data-filter="service"><img src="images/nodes/node-service.png">Services <span class="qc" id="cn-s">-</span></button>
+<button class="qb" data-filter="cron"><img src="images/nodes/node-cron.png">Cron Jobs <span class="qc" id="cn-c">-</span></button>
+</div>
+<div class="ssh">METADATA</div>
+<div class="ssc">
+<div class="md"><span class="mdk">Hostname</span><span class="mdv" id="mh">-</span></div>
+<div class="md"><span class="mdk">OS</span><span class="mdv" id="mo">-</span></div>
+<div class="md"><span class="mdk">Kernel</span><span class="mdv" id="mk2">-</span></div>
+<div class="md"><span class="mdk">User</span><span class="mdv" id="mu">-</span></div>
+</div>
+</div>
+</div>
+</div>
+<div id="main">
+<div id="toolbar">
+<div id="tl">
+<input type="file" id="fi" accept=".json" style="display:none">
+<button id="import-btn"><img src="images/icons/icon-import.png">Import JSON</button>
+<button id="clear-btn"><img src="images/icons/icon-clear.png">Clear Graph</button>
+<input type="text" id="si2" placeholder="Search nodes...">
+</div>
+<div id="tr">
+<button id="zoom-in">+</button>
+<button id="zoom-out">-</button>
+<button id="fit-graph" title="Fit"><img src="images/icons/icon-fit.png"></button>
+<button id="relayout" title="Re-layout"><img src="images/icons/icon-relayout.png"></button>
+</div>
+</div>
+<div id="cy"></div>
+<div id="es">
+<img src="images/logo-pengu.png" alt="BloodPengu">
+<h2>No Graph Loaded</h2>
+<p>Import a PyPengu JSON file to visualize Linux privilege escalation attack paths.</p>
+<div id="empty-hint">+ Click to import • or drag & drop JSON file</div>
+</div>
+</div>
+<div id="dp">
+<button id="dc" class="close-btn">X</button>
+<div id="db"></div>
+</div>
+</div>
+<div id="dov">Drop JSON file to import</div>
+<div id="toast"></div>
+<script src="js/cytoscape.min.js"></script>
+<script src="js/bloodpengu.js"></script>
+<script src="js/graph.js"></script>
+</body>
+</html>

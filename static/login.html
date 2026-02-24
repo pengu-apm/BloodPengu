@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BloodPengu: Logon</title>
+<link rel="icon" type="image/png" href="./images/pengu_logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --black: #04060a;
+  --panel: #0d1117;
+  --border: #0e1218;
+  --red: #c0000a;
+  --red-bright: #e8000d;
+  --red-dim: #6b0005;
+  --white: #f0f0f0;
+  --grey: #4a4f5a;
+  --grey-light: #8a8f9a;
+  --mono: 'Space Mono', monospace;
+  --display: 'Syne', sans-serif;
+}
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--mono);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: none;
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.cursor {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: var(--red-bright);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px var(--red-bright);
+  transition: width 0.15s, height 0.15s;
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(192, 0, 10, 0.45);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+}
+
+canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 400px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeUp 0.7s ease 0.1s both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.logo {
+  margin-bottom: 44px;
+  text-align: center;
+  position: relative;
+}
+
+.logo-lockup {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(36px, 8vw, 54px);
+  letter-spacing: -1.5px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.logo-blood {
+  color: var(--red);
+  text-shadow: 0 0 40px rgba(192, 0, 10, 0.5), 0 0 80px rgba(192, 0, 10, 0.2);
+}
+
+.logo-pengu {
+  color: var(--white);
+}
+
+.logo-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  background: var(--red-bright);
+  border-radius: 50%;
+  margin-left: 10px;
+  margin-bottom: 4px;
+  box-shadow: 0 0 12px var(--red-bright);
+  animation: pulseDot 2s ease-in-out infinite;
+  vertical-align: middle;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 12px var(--red-bright); }
+  50% { opacity: 0.3; box-shadow: 0 0 4px var(--red-bright); }
+}
+
+.logo-sub {
+  font-size: 9px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-top: 10px;
+}
+
+.card {
+  width: 100%;
+  background: var(--panel);
+  border: 1px solid #131920;
+  border-top: 2px solid var(--red-dim);
+  padding: 36px 32px;
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(192, 0, 10, 0.4), transparent);
+}
+
+.error-box {
+  background: rgba(192, 0, 10, 0.08);
+  border: 1px solid var(--red-dim);
+  color: #ff4444;
+  padding: 11px 14px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  margin-bottom: 22px;
+  display: none;
+  align-items: center;
+  gap: 10px;
+}
+
+.error-box.show {
+  display: flex;
+}
+
+.error-box::before {
+  content: '!';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid currentColor;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.field {
+  margin-bottom: 22px;
+}
+
+.field label {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--grey-light);
+  margin-bottom: 10px;
+}
+
+.field input {
+  width: 100%;
+  padding: 12px 14px;
+  background: rgba(4, 6, 10, 0.8);
+  border: 1px solid #1a2030;
+  color: var(--white);
+  font-family: var(--mono);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
+  -webkit-appearance: none;
+}
+
+.field input:focus {
+  border-color: var(--red-dim);
+  box-shadow: 0 0 0 1px var(--red-dim), inset 0 0 20px rgba(192, 0, 10, 0.04);
+}
+
+.field input::placeholder {
+  color: var(--grey);
+}
+
+.field input:focus + .field-line {
+  transform: scaleX(1);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--red);
+  color: var(--white);
+  border: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: none;
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.25s, box-shadow 0.25s;
+}
+
+.submit-btn:hover {
+  background: var(--red-bright);
+  box-shadow: 0 0 30px rgba(232, 0, 13, 0.35);
+}
+
+.submit-btn:active {
+  transform: scale(0.99);
+}
+
+.submit-btn.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.submit-btn .btn-text {
+  display: block;
+  transition: opacity 0.2s;
+}
+
+.card-footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.card-footer span {
+  color: var(--red-dim);
+}
+
+@media (max-width: 480px) {
+  .wrap {
+    padding: 20px 16px;
+  }
+
+  .card {
+    padding: 28px 20px;
+  }
+
+  .logo-lockup {
+    font-size: 36px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+<canvas id="bg"></canvas>
+
+<div class="wrap">
+  <div class="logo">
+    <div class="logo-lockup">
+      <span class="logo-blood">Blood</span><span class="logo-pengu">Pengu</span><span class="logo-dot"></span>
+    </div>
+    <div class="logo-sub">Degree Visualization of Linux ASR</div>
+  </div>
+
+  <div class="card">
+    <div class="error-box" id="error">Invalid credentials</div>
+    <form id="loginForm" autocomplete="off">
+      <div class="field">
+        <label for="username">Username</label>
+        <input type="text" id="username" autocomplete="username" required spellcheck="false">
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span class="btn-text">Login</span>
+      </button>
+    </form>
+    <div class="card-footer">By <span>AdverXarial</span></div>
+  </div>
+</div>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', function(e) {
+  mx = e.clientX;
+  my = e.clientY;
+});
+
+function animCursor() {
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+let nodes = [], edges = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+for (let i = 0; i < 32; i++) {
+  nodes.push({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    vx: (Math.random() - 0.5) * 0.25,
+    vy: (Math.random() - 0.5) * 0.25,
+    r: Math.random() * 2.5 + 1.5,
+    type: Math.random() < 0.12 ? 'root' : Math.random() < 0.28 ? 'group' : 'user'
+  });
+}
+
+for (let i = 0; i < nodes.length; i++) {
+  for (let j = i + 1; j < nodes.length; j++) {
+    if (Math.random() < 0.08) edges.push([i, j]);
+  }
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  nodes.forEach(function(n) {
+    n.x += n.vx; n.y += n.vy;
+    if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+    if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+  });
+
+  edges.forEach(function(e) {
+    const a = nodes[e[0]], b = nodes[e[1]];
+    const d = Math.hypot(a.x - b.x, a.y - b.y);
+    if (d > 280) return;
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    ctx.strokeStyle = 'rgba(160,0,8,' + ((1 - d / 280) * 0.3) + ')';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+  });
+
+  nodes.forEach(function(n) {
+    let r, g, b;
+    if (n.type === 'root') { r = 192; g = 0; b = 10; }
+    else if (n.type === 'group') { r = 58; g = 154; b = 106; }
+    else { r = 200; g = 168; b = 32; }
+    const grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 3);
+    grd.addColorStop(0, 'rgba(' + r + ',' + g + ',' + b + ',0.1)');
+    grd.addColorStop(1, 'rgba(' + r + ',' + g + ',' + b + ',0)');
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r * 3, 0, Math.PI * 2);
+    ctx.fillStyle = grd;
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
+    ctx.fill();
+  });
+
+  requestAnimationFrame(draw);
+}
+draw();
+
+const form = document.getElementById('loginForm');
+const error = document.getElementById('error');
+const usernameEl = document.getElementById('username');
+const passwordEl = document.getElementById('password');
+const submitBtn = document.getElementById('submitBtn');
+
+if (sessionStorage.getItem('bloodpengu_auth') === 'true') {
+  window.location.href = 'index.html';
+}
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+  error.classList.remove('show');
+  submitBtn.classList.add('loading');
+  submitBtn.querySelector('.btn-text').textContent = 'Authenticating...';
+
+  setTimeout(function() {
+    if (usernameEl.value === 'pengu' && passwordEl.value === 'pengu') {
+      sessionStorage.setItem('bloodpengu_auth', 'true');
+      window.location.href = 'index.html';
+    } else {
+      error.classList.add('show');
+      passwordEl.value = '';
+      passwordEl.focus();
+      submitBtn.classList.remove('loading');
+      submitBtn.querySelector('.btn-text').textContent = 'Login';
+    }
+  }, 600);
+});
+</script>
+</body>
+</html>
