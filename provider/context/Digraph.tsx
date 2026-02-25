@@ -1,7 +1,13 @@
+// Copyright 2026 AdverXarial, byt3n33dl3.
+//
+// Licensed under the MIT License,
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
 import React, { FC, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { ContainerCluster } from '../contexts/ContainerCluster';
-import { CurrentCluster } from '../contexts/CurrentCluster';
+import { ContainerCluster } from '../bloodpengu/ContainerCluster';
+import { CurrentCluster } from '../bloodpengu/CurrentCluster';
 import { useDigraph } from '../bloodpengu/use-digraph';
 import { useRenderedID } from '../bloodpengu/use-rendered-id';
 import { useContainerCluster } from '../bloodpengu/use-container-cluster';
@@ -9,9 +15,6 @@ import { DuplicatedRootClusterErrorMessage } from '../errors';
 import { useClusterMap } from '../bloodpengu/use-cluster-map';
 import { RootClusterProps } from '../types';
 
-/**
- * `Digraph` component.
- */
 export const Digraph: FC<RootClusterProps> = ({ children, label, ...options }) => {
   const container = useContainerCluster();
   if (container !== null) {
