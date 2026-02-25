@@ -1,5 +1,5 @@
 import { newError } from 'neo4j-driver-core'
-import LivenessCheckProvider from '../../src/connection-provider/liveness-check-provider'
+import LivenessCheckProvider from '../../bloodpengu/connection-provider/liveness-check-provider'
 
 describe('LivenessCheckProvider', () => {
   describe('.check', () => {
@@ -94,7 +94,6 @@ describe('LivenessCheckProvider', () => {
   })
 
   function noNetworkNeededFixture () {
-    //  [connectionLivenessCheckTimeout, authToken, idleFor]
     return [
       [undefined, null, 1245],
       [null, null, 30000],
