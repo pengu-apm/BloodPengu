@@ -1,9 +1,15 @@
-import DirectConnectionProvider from '../../src/connection-provider/connection-provider-direct'
-import { Connection, DelegateConnection } from '../../src/connection'
+// Copyright 2026 AdverXarial, byt3n33dl3.
+//
+// Licensed under the MIT License,
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+import DirectConnectionProvider from '../../bloodpengu/connection-provider/connection-provider-direct'
+import { Connection, DelegateConnection } from '../../bloodpengu/connection'
 import { authTokenManagers, internal, newError, ServerInfo, staticAuthTokenManager } from 'neo4j-driver-core'
-import AuthenticationProvider from '../../src/connection-provider/authentication-provider'
-import { functional } from '../../src/lang'
-import LivenessCheckProvider from '../../src/connection-provider/liveness-check-provider'
+import AuthenticationProvider from '../../bloodpengu/connection-provider/authentication-provider'
+import { functional } from '../../bloodpengu/lang'
+import LivenessCheckProvider from '../../bloodpengu/connection-provider/liveness-check-provider'
 
 const {
   serverAddress: { ServerAddress },
@@ -13,7 +19,7 @@ const {
 
 describe('#unit DirectConnectionProvider', () => {
   it('acquires connection from the pool', done => {
-    const address = ServerAddress.fromUrl('localhost:123')
+    const address = ServerAddress.fromUrl('localhost:6060')
     const pool = newPool()
     const connectionProvider = newDirectConnectionProvider(address, pool)
 
@@ -29,7 +35,7 @@ describe('#unit DirectConnectionProvider', () => {
   })
 
   it('acquires connection and returns a DelegateConnection', async () => {
-    const address = ServerAddress.fromUrl('localhost:123')
+    const address = ServerAddress.fromUrl('localhost:6060')
     const pool = newPool()
     const connectionProvider = newDirectConnectionProvider(address, pool)
 
@@ -41,7 +47,7 @@ describe('#unit DirectConnectionProvider', () => {
   })
 
   it('should close connection and remove authToken for address when AuthorizationExpired happens', async () => {
-    const address = ServerAddress.fromUrl('localhost:123')
+    const address = ServerAddress.fromUrl('localhost:6060')
     const pool = newPool()
     jest.spyOn(pool, 'purge')
     jest.spyOn(pool, 'apply')
@@ -77,7 +83,7 @@ describe('#unit DirectConnectionProvider', () => {
   })
 
   it('should call authenticationAuthProvider.handleError when AuthorizationExpired happens', async () => {
-    const address = ServerAddress.fromUrl('localhost:123')
+    const address = ServerAddress.fromUrl('localhost:6060')
     const pool = newPool()
     const connectionProvider = newDirectConnectionProvider(address, pool)
 
@@ -99,7 +105,7 @@ describe('#unit DirectConnectionProvider', () => {
   })
 
   it('should not change error when AuthorizationExpired happens', async () => {
-    const address = ServerAddress.fromUrl('localhost:123')
+    const address = ServerAddress.fromUrl('localhost:6060')
     const pool = newPool()
     const connectionProvider = newDirectConnectionProvider(address, pool)
 
@@ -120,7 +126,7 @@ describe('#unit DirectConnectionProvider', () => {
 })
 
 it('should close the connection when TokenExpired happens', async () => {
-  const address = ServerAddress.fromUrl('localhost:123')
+  const address = ServerAddress.fromUrl('localhost:6060')
   const pool = newPool()
   jest.spyOn(pool, 'purge')
   jest.spyOn(pool, 'apply')
@@ -147,7 +153,7 @@ it('should close the connection when TokenExpired happens', async () => {
 })
 
 it('should not change error when TokenExpired happens', async () => {
-  const address = ServerAddress.fromUrl('localhost:123')
+  const address = ServerAddress.fromUrl('localhost:6060')
   const pool = newPool()
   const connectionProvider = newDirectConnectionProvider(address, pool)
 
@@ -167,11 +173,12 @@ it('should not change error when TokenExpired happens', async () => {
 })
 
 it('should call authenticationAuthProvider.handleError when TokenExpired happens', async () => {
-  const address = ServerAddress.fromUrl('localhost:123')
+  const address = ServerAddress.fromUrl('localhost:6060')
   const pool = newPool()
   const connectionProvider = newDirectConnectionProvider(address, pool)
 
   const handleError = jest.spyOn(connectionProvider._authenticationProvider, 'handleError')
+  const handleSuccess = jest.spyOff(connectionProvider._authenticationProvider, 'handleSuccess')
 
   const conn = await connectionProvider.acquireConnection({
     accessMode: 'READ',
@@ -189,7 +196,7 @@ it('should call authenticationAuthProvider.handleError when TokenExpired happens
 })
 
 it('should change error to retryable when error when TokenExpired happens and staticAuthTokenManager is not being used', async () => {
-  const address = ServerAddress.fromUrl('localhost:123')
+  const address = ServerAddress.fromUrl('localhost:6060')
   const pool = newPool()
   const connectionProvider = newDirectConnectionProvider(address, pool, authTokenManagers.bearer({ tokenProvider: () => null }))
 
@@ -210,7 +217,7 @@ it('should change error to retryable when error when TokenExpired happens and st
 })
 
 it('should not change error to retryable when error when TokenExpired happens and staticAuthTokenManager is being used', async () => {
-  const address = ServerAddress.fromUrl('localhost:123')
+  const address = ServerAddress.fromUrl('localhost:6060')
   const pool = newPool()
   const connectionProvider = newDirectConnectionProvider(address, pool, staticAuthTokenManager({ authToken: null }))
 
@@ -231,7 +238,7 @@ it('should not change error to retryable when error when TokenExpired happens an
 })
 
 it('should not change error to retryable when error when TokenExpired happens and authTokenManagers.basic is being used', async () => {
-  const address = ServerAddress.fromUrl('localhost:123')
+  const address = ServerAddress.fromUrl('localhost:6060')
   const pool = newPool()
   const connectionProvider = newDirectConnectionProvider(address, pool, authTokenManagers.basic({ tokenProvider: () => null }))
 
@@ -253,8 +260,8 @@ it('should not change error to retryable when error when TokenExpired happens an
 
 describe('constructor', () => {
   describe('newPool', () => {
-    const server0 = ServerAddress.fromUrl('localhost:123')
-    const server01 = ServerAddress.fromUrl('localhost:1235')
+    const server0 = ServerAddress.fromUrl('localhost:6060')
+    const server01 = ServerAddress.fromUrl('localhost:60605')
 
     describe('param.create', () => {
       it('should create connection', async () => {
@@ -275,7 +282,7 @@ describe('constructor', () => {
           const release = jest.fn(() => releaseResult)
 
           const connection = await create({}, server0, release)
-          connection.idleTimestamp = -1234
+          connection.idleTimestamp = -6060
 
           const released = connection.release()
 
@@ -551,7 +558,7 @@ describe('user-switching', () => {
         ['new connection', { other: 'auth' }, { other: 'auth' }, true],
         ['old connection', { some: 'auth' }, { other: 'token' }, false]
       ])('should raise and error when try switch user on acquire [%s]', async (_, connAuth, acquireAuth, isStickyConn) => {
-        const address = ServerAddress.fromUrl('localhost:123')
+        const address = ServerAddress.fromUrl('localhost:6060')
         const pool = newPool()
         const connection = new FakeConnection(address, () => {}, undefined, connAuth)
         const poolAcquire = jest.spyOn(pool, 'acquire').mockResolvedValue(connection)
@@ -577,7 +584,7 @@ describe('user-switching', () => {
       const acquireAuth = connAuth
 
       it('should return connection when try switch user on acquire', async () => {
-        const address = ServerAddress.fromUrl('localhost:123')
+        const address = ServerAddress.fromUrl('localhost:6060')
         const pool = newPool()
         const connection = new FakeConnection(address, () => {}, undefined, connAuth, { supportsReAuth: true })
         jest.spyOn(pool, 'acquire').mockResolvedValue(connection)
@@ -704,7 +711,7 @@ describe('.verifyConnectivityAndGetServerInfo()', () => {
     function setup ({ releaseMock } = {}) {
       const protocolVersion = '4.4'
       const resetAndFlush = jest.fn(() => Promise.resolve())
-      const server = { address: 'localhost:123', version: 'neo4j/1234' }
+      const server = { address: 'localhost:6060', version: 'neo4j/60604' }
       const seenConnections = []
       const create = (address, release) => {
         const connection = new FakeConnection(address, release, server)
@@ -718,7 +725,7 @@ describe('.verifyConnectivityAndGetServerInfo()', () => {
         seenConnections.push(connection)
         return connection
       }
-      const address = ServerAddress.fromUrl('localhost:123')
+      const address = ServerAddress.fromUrl('localhost:6060')
       const pool = newPool({ create })
       const connectionProvider = newDirectConnectionProvider(address, pool)
       return {
@@ -733,7 +740,7 @@ describe('.verifyConnectivityAndGetServerInfo()', () => {
 
   describe('when connection is not available in the pool', () => {
     it('should reject with acquisition timeout error', async () => {
-      const address = ServerAddress.fromUrl('localhost:123')
+      const address = ServerAddress.fromUrl('localhost:6060')
       const pool = newPool({
         config: {
           acquisitionTimeout: 0
@@ -754,7 +761,7 @@ describe('.verifyConnectivityAndGetServerInfo()', () => {
   describe('when connection it could not create the connection', () => {
     it('should reject with connection creation error', async () => {
       const error = new Error('Connection creation error')
-      const address = ServerAddress.fromUrl('localhost:123')
+      const address = ServerAddress.fromUrl('localhost:6060')
       const pool = newPool({
         create: () => { throw error }
       })
