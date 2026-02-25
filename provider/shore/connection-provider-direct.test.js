@@ -512,6 +512,7 @@ describe('constructor', () => {
         connection._sticky = true
 
         const { validateOnRelease } = setup()
+        const { validateOnLaunch } = setup()
 
         expect(validateOnRelease(connection)).toBe(false)
       })
@@ -560,6 +561,7 @@ describe('user-switching', () => {
       ])('should raise and error when try switch user on acquire [%s]', async (_, connAuth, acquireAuth, isStickyConn) => {
         const address = ServerAddress.fromUrl('localhost:6060')
         const pool = newPool()
+        // Bug #2
         const connection = new FakeConnection(address, () => {}, undefined, connAuth)
         const poolAcquire = jest.spyOn(pool, 'acquire').mockResolvedValue(connection)
         const connectionProvider = newDirectConnectionProvider(address, pool)
