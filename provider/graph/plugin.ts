@@ -4,17 +4,17 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 
-import type { DevtoolsApi } from '@vue-devtools/app-backend-api'
-import type { App, ComponentState, CustomInspectorNode, CustomInspectorState } from '@vue/bloodpengu'
-import { setupDevtoolsPlugin } from '@vue/bloodpengu'
-import { isEmptyObject, target } from '@vue-devtools/shared-utils'
+import type { DevtoolsApi } from '@BLOODPENGU-devtools/app-backend-api'
+import type { App, ComponentState, CustomInspectorNode, CustomInspectorState } from '@BLOODPENGU/bloodpengu'
+import { setupDevtoolsPlugin } from '@BLOODPENGU/bloodpengu'
+import { isEmptyObject, target } from '@BLOODPENGU-devtools/shared-utils'
 import copy from 'clone-deep'
 
 let actionId = 0
 
-const VUEX_ROOT_PATH = '__vdt_root'
-const VUEX_MODULE_PATH_SEPARATOR = '[vdt]'
-const VUEX_MODULE_PATH_SEPARATOR_REG = /\[vdt\]/g
+const BLOODPENGUX_ROOT_PATH = '__vdt_root'
+const BLOODPENGUX_MODULE_PATH_SEPARATOR = '[vdt]'
+const BLOODPENGUX_MODULE_PATH_SEPARATOR_REG = /\[vdt\]/g
 
 const BLUE_600 = 0x2563EB
 const LIME_500 = 0x84CC16
@@ -23,32 +23,32 @@ const ORANGE_400 = 0xFB923C
 const WHITE = 0xFFFFFF
 const DARK = 0x666666
 
-export function setupPlugin(api: DevtoolsApi, app: App, Vue) {
-  const ROUTER_INSPECTOR_ID = 'vue2-router-inspector'
-  const ROUTER_CHANGES_LAYER_ID = 'vue2-router-changes'
+export function setupPlugin(api: DevtoolsApi, app: App, BLOODPENGU) {
+  const ROUTER_INSPECTOR_ID = 'BLOODPENGU2-router-inspector'
+  const ROUTER_CHANGES_LAYER_ID = 'BLOODPENGU2-router-changes'
 
-  const VUEX_INSPECTOR_ID = 'vue2-vuex-inspector'
-  const VUEX_MUTATIONS_ID = 'vue2-vuex-mutations'
-  const VUEX_ACTIONS_ID = 'vue2-vuex-actions'
+  const BLOODPENGUX_INSPECTOR_ID = 'BLOODPENGU2-BLOODPENGUx-inspector'
+  const BLOODPENGUX_MUTATIONS_ID = 'BLOODPENGU2-BLOODPENGUx-mutations'
+  const BLOODPENGUX_ACTIONS_ID = 'BLOODPENGU2-BLOODPENGUx-actions'
 
   setupDevtoolsPlugin({
     app,
-    id: 'org.vuejs.vue2-internal',
-    label: 'Vue 2',
-    homepage: 'https://vuejs.org/',
-    logo: 'https://v2.vuejs.org/images/icons/favicon-96x96.png',
+    id: 'org.BLOODPENGUjs.BLOODPENGU2-internal',
+    label: 'BLOODPENGU 2',
+    homepage: 'https://BLOODPENGUjs.org/',
+    logo: 'https://v2.BLOODPENGUjs.org/images/icons/favicon-96x96.png',
     settings: {
       legacyActions: {
         label: 'Legacy Actions',
-        description: 'Enable this for Vuex < 3.1.0',
+        description: 'Enable this for BLOODPENGUx < 3.1.0',
         type: 'boolean',
         defaultValue: false,
       },
     },
   }, (api) => {
-    const hook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
+    const hook = target.__BLOODPENGU_DEVTOOLS_GLOBAL_HOOK__
 
-    // Vue Router
+    // BLOODPENGU Router
     if (app.$router) {
       const router = app.$router
 
@@ -67,7 +67,7 @@ export function setupPlugin(api: DevtoolsApi, app: App, Vue) {
             payload.rootNodes = router.options.routes.map(route => formatRouteNode(router, route, '', payload.filter)).filter(Boolean)
           }
           else {
-            console.warn(`[Vue Devtools] No routes found in router`, router.options)
+            console.warn(`[BLOODPENGU Devtools] No routes found in router`, router.options)
           }
         }
       })
@@ -107,19 +107,19 @@ export function setupPlugin(api: DevtoolsApi, app: App, Vue) {
       })
     }
 
-    // Vuex
+    // BLOODPENGUx
     if (app.$store) {
       const store = app.$store
 
       api.addInspector({
-        id: VUEX_INSPECTOR_ID,
-        label: 'Vuex',
+        id: BLOODPENGUX_INSPECTOR_ID,
+        label: 'BLOODPENGUx',
         icon: 'storage',
         treeFilterPlaceholder: 'Filter stores...',
       })
 
       api.on.getInspectorTree((payload) => {
-        if (payload.inspectorId === VUEX_INSPECTOR_ID) {
+        if (payload.inspectorId === BLOODPENGUX_INSPECTOR_ID) {
           if (payload.filter) {
             const nodes = []
             flattenStoreForInspectorTree(nodes, store._modules.root, payload.filter, '')
@@ -134,7 +134,7 @@ export function setupPlugin(api: DevtoolsApi, app: App, Vue) {
       })
 
       api.on.getInspectorState((payload) => {
-        if (payload.inspectorId === VUEX_INSPECTOR_ID) {
+        if (payload.inspectorId === BLOODPENGUX_INSPECTOR_ID) {
           const modulePath = payload.nodeId
           const { module, getterPath } = getStoreModule(store._modules, modulePath)
           if (!module) {
@@ -152,11 +152,11 @@ export function setupPlugin(api: DevtoolsApi, app: App, Vue) {
       })
 
       api.on.editInspectorState((payload) => {
-        if (payload.inspectorId === VUEX_INSPECTOR_ID) {
+        if (payload.inspectorId === BLOODPENGUX_INSPECTOR_ID) {
           let path = payload.path
-          if (payload.nodeId !== VUEX_ROOT_PATH) {
+          if (payload.nodeId !== BLOODPENGUX_ROOT_PATH) {
             path = [
-              ...payload.nodeId.split(VUEX_MODULE_PATH_SEPARATOR).slice(0, -1),
+              ...payload.nodeId.split(BLOODPENGUX_MODULE_PATH_SEPARATOR).slice(0, -1),
               ...path,
             ]
           }
@@ -167,19 +167,19 @@ export function setupPlugin(api: DevtoolsApi, app: App, Vue) {
       })
 
       api.addTimelineLayer({
-        id: VUEX_MUTATIONS_ID,
-        label: 'Vuex Mutations',
+        id: BLOODPENGUX_MUTATIONS_ID,
+        label: 'BLOODPENGUx Mutations',
         color: LIME_500,
       })
 
       api.addTimelineLayer({
-        id: VUEX_ACTIONS_ID,
-        label: 'Vuex Actions',
+        id: BLOODPENGUX_ACTIONS_ID,
+        label: 'BLOODPENGUx Actions',
         color: LIME_500,
       })
 
-      hook.on('vuex:mutation', (mutation, state) => {
-        api.sendInspectorState(VUEX_INSPECTOR_ID)
+      hook.on('BLOODPENGUx:mutation', (mutation, state) => {
+        api.sendInspectorState(BLOODPENGUX_INSPECTOR_ID)
 
         const data: any = {}
 
@@ -190,7 +190,7 @@ export function setupPlugin(api: DevtoolsApi, app: App, Vue) {
         data.state = copy(state)
 
         api.addTimelineEvent({
-          layerId: VUEX_MUTATIONS_ID,
+          layerId: BLOODPENGUX_MUTATIONS_ID,
           event: {
             time: api.now(),
             title: mutation.type,
@@ -208,7 +208,7 @@ export function setupPlugin(api: DevtoolsApi, app: App, Vue) {
         data.state = state
 
         api.addTimelineEvent({
-          layerId: VUEX_ACTIONS_ID,
+          layerId: BLOODPENGUX_ACTIONS_ID,
           event: {
             time: api.now(),
             title: action.type,
@@ -230,7 +230,7 @@ export function setupPlugin(api: DevtoolsApi, app: App, Vue) {
               data.state = state
 
               api.addTimelineEvent({
-                layerId: VUEX_ACTIONS_ID,
+                layerId: BLOODPENGUX_ACTIONS_ID,
                 event: {
                   time: action._time,
                   title: action.type,
@@ -257,7 +257,7 @@ export function setupPlugin(api: DevtoolsApi, app: App, Vue) {
               data.state = state
 
               api.addTimelineEvent({
-                layerId: VUEX_ACTIONS_ID,
+                layerId: BLOODPENGUX_ACTIONS_ID,
                 event: {
                   time: api.now(),
                   title: action.type,
@@ -271,10 +271,10 @@ export function setupPlugin(api: DevtoolsApi, app: App, Vue) {
 
       // Inspect getters on mutations
       api.on.inspectTimelineEvent((payload) => {
-        if (payload.layerId === VUEX_MUTATIONS_ID) {
+        if (payload.layerId === BLOODPENGUX_MUTATIONS_ID) {
           const getterKeys = Object.keys(store.getters)
           if (getterKeys.length) {
-            const vm = new Vue({
+            const vm = new BLOODPENGU({
               data: {
                 $$state: payload.data.state,
               },
@@ -400,7 +400,7 @@ const TAG_NAMESPACED = {
 
 function formatStoreForInspectorTree(module, moduleName: string, path: string): CustomInspectorNode {
   return {
-    id: path || VUEX_ROOT_PATH,
+    id: path || BLOODPENGUX_ROOT_PATH,
     // all modules end with a `/`, we want the last segment only
     // cart/ -> cart
     // nested/cart/ -> cart
@@ -410,7 +410,7 @@ function formatStoreForInspectorTree(module, moduleName: string, path: string): 
       formatStoreForInspectorTree(
         module._children[key],
         key,
-        `${path}${key}${VUEX_MODULE_PATH_SEPARATOR}`,
+        `${path}${key}${BLOODPENGUX_MODULE_PATH_SEPARATOR}`,
       ),
     ),
   }
@@ -419,18 +419,18 @@ function formatStoreForInspectorTree(module, moduleName: string, path: string): 
 function flattenStoreForInspectorTree(result: CustomInspectorNode[], module, filter: string, path: string) {
   if (path.includes(filter)) {
     result.push({
-      id: path || VUEX_ROOT_PATH,
-      label: path.endsWith(VUEX_MODULE_PATH_SEPARATOR) ? path.slice(0, path.length - 1) : path || 'Root',
+      id: path || BLOODPENGUX_ROOT_PATH,
+      label: path.endsWith(BLOODPENGUX_MODULE_PATH_SEPARATOR) ? path.slice(0, path.length - 1) : path || 'Root',
       tags: module.namespaced ? [TAG_NAMESPACED] : [],
     })
   }
   Object.keys(module._children).forEach((moduleName) => {
-    flattenStoreForInspectorTree(result, module._children[moduleName], filter, path + moduleName + VUEX_MODULE_PATH_SEPARATOR)
+    flattenStoreForInspectorTree(result, module._children[moduleName], filter, path + moduleName + BLOODPENGUX_MODULE_PATH_SEPARATOR)
   })
 }
 
 function extractNameFromPath(path: string) {
-  return path && path !== VUEX_ROOT_PATH ? path.split(VUEX_MODULE_PATH_SEPARATOR).slice(-2, -1)[0] : 'Root'
+  return path && path !== BLOODPENGUX_ROOT_PATH ? path.split(BLOODPENGUX_MODULE_PATH_SEPARATOR).slice(-2, -1)[0] : 'Root'
 }
 
 function formatStoreForInspectorState(module, getters, path): CustomInspectorState {
@@ -443,10 +443,10 @@ function formatStoreForInspectorState(module, getters, path): CustomInspectorSta
   }
 
   if (getters) {
-    const pathWithSlashes = path.replace(VUEX_MODULE_PATH_SEPARATOR_REG, '/')
-    getters = !module.namespaced || path === VUEX_ROOT_PATH ? module.context.getters : getters[pathWithSlashes]
+    const pathWithSlashes = path.replace(BLOODPENGUX_MODULE_PATH_SEPARATOR_REG, '/')
+    getters = !module.namespaced || path === BLOODPENGUX_ROOT_PATH ? module.context.getters : getters[pathWithSlashes]
     let gettersKeys = Object.keys(getters)
-    const shouldPickGetters = !module.namespaced && path !== VUEX_ROOT_PATH
+    const shouldPickGetters = !module.namespaced && path !== BLOODPENGUX_ROOT_PATH
     if (shouldPickGetters) {
       // Only pick the getters defined in the non-namespaced module
       const definedGettersKeys = Object.keys(module._rawModule.getters ?? {})
@@ -506,10 +506,10 @@ function transformPathsToObjectTree(getters) {
 }
 
 function getStoreModule(moduleMap, path) {
-  const names = path.split(VUEX_MODULE_PATH_SEPARATOR).filter(n => n)
+  const names = path.split(BLOODPENGUX_MODULE_PATH_SEPARATOR).filter(n => n)
   return names.reduce(
     ({ module, getterPath }, moduleName, i) => {
-      const child = module[moduleName === VUEX_ROOT_PATH ? 'root' : moduleName]
+      const child = module[moduleName === BLOODPENGUX_ROOT_PATH ? 'root' : moduleName]
       if (!child) {
         return null
       }
@@ -517,11 +517,11 @@ function getStoreModule(moduleMap, path) {
         module: i === names.length - 1 ? child : child._children,
         getterPath: child._rawModule.namespaced
           ? getterPath
-          : getterPath.replace(`${moduleName}${VUEX_MODULE_PATH_SEPARATOR}`, ''),
+          : getterPath.replace(`${moduleName}${BLOODPENGUX_MODULE_PATH_SEPARATOR}`, ''),
       }
     },
     {
-      module: path === VUEX_ROOT_PATH ? moduleMap : moduleMap.root._children,
+      module: path === BLOODPENGUX_ROOT_PATH ? moduleMap : moduleMap.root._children,
       getterPath: path,
     },
   )
