@@ -1,7 +1,7 @@
 import { groupBy } from 'lodash/collection';
 
-const TRUST_DIRECTION_INBOUND = 'Inbound';
-const TRUST_DIRECTION_OUTBOUND = 'Outbound';
+const TRUST_DIRECTION_TO_ROOT = 'TO_ROOT';
+const TRUST_DIRECTION_TO_USER = 'TO_USER';
 const TRUST_DIRECTION_BIDIRECTIONAL = 'Bidirectional';
 
 const PROP_QUERY =
@@ -40,8 +40,8 @@ export const ADLabels = {
 const TrustDirections =
 {
     0: "Disabled",
-    1: "Inbound",
-    2: "Outbound",
+    1: "TO_ROOT",
+    2: "TO_USER",
     3: "Bidirectional"
 }
 
@@ -876,7 +876,7 @@ export function buildDomainJsonNew(chunk) {
             });
 
             if (
-                direction === TRUST_DIRECTION_INBOUND ||
+                direction === TRUST_DIRECTION_TO_ROOT ||
                 direction === TRUST_DIRECTION_BIDIRECTIONAL
             ) {
                 insertNew(queries, format, {
@@ -889,7 +889,7 @@ export function buildDomainJsonNew(chunk) {
             }
 
             if (
-                direction === TRUST_DIRECTION_OUTBOUND ||
+                direction === TRUST_DIRECTION_TO_USER ||
                 direction === TRUST_DIRECTION_BIDIRECTIONAL
             ) {
                 insertNew(queries, format, {
