@@ -8,7 +8,7 @@
 
 set -e
 
-echo "installing BloodPengu {Daemon Version}"
+echo "installing BloodPengu {Daemon Version} v2.5.4"
 
 INSTALL_DIR="$HOME/.bloodpengu"
 BIN_DIR="$HOME/.local/bin"
@@ -45,7 +45,7 @@ if [[ ":$PATH:" != *":$BIN_DIR:"* ]]; then
     echo ""
 fi
 
+echo ""
 echo "installation complete!"
 echo ""
 echo "run: bloodpengu"
-echo ""

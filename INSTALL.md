@@ -14,15 +14,21 @@ Copy the GitHub Repository:
 git clone https://github.com/pengu-apm/BloodPengu.git
 ```
 
-Run installation
+Run (bash script!!) installation
 
 ```
 bash run.sh
-Installing BloodPengu...
-[+] Copying files...
-[+] Building...
-[+] Creating launcher...
-Installation complete!
+```
+
+```
+┌──(kali㉿kali)-[~]
+└─$ bash run.sh 
+installing BloodPengu {Daemon Version}
+[+] {building} bloodpengu copy
+[+] {building} bloodpengu
+[+] {building} launcher
+[+] {implant} bloodpengu
+installation complete!
 
 run: bloodpengu
 ```
