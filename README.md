@@ -1,6 +1,6 @@
 <p align="center">
     <picture>
-        <img src="./static/images/pengu_logo_nobg.png" alt="BloodPengu Project" width='300'/>
+        <img src="./static/images/pengu_logo_nobg.png" alt="BloodPengu Project" width='270'/>
     </picture>
 </p>
 
@@ -9,7 +9,7 @@
 # BloodPengu
 
 ```
-v2.0.3 🎉 [+] Active
+v2.5.1 🎉 [+] Active
 ```
 
 An inspired project from [@SpecterOps](https://github.com/SpecterOps/) BloodHound for AD and AzureAD based, now came in a Linux Attack path-management based `JavaScript` and `Go-lang`, able to digest JSON data to be displayed in Front-end UI for <ins>Security</ins> to <ins>identify and eliminate</ins> attack-paths.
