@@ -15,7 +15,6 @@ You may obtain a copy of the License at -->
 </head>
 <body>
 
-<!-- Drag overlay -->
 <div id="dov">
   <div class="doi">
     <img class="dico" src="./images/pengu_logo_nobg.png" alt="BloodPengu">
@@ -26,7 +25,6 @@ You may obtain a copy of the License at -->
 
 <input type="file" id="fi" accept=".json">
 
-<!-- ── TOP BAR ─────────────────────────────────────────── -->
 <div id="topbar">
   <div id="lz">
     <img id="logo-img" src="./images/pengu_logo_nobg.png" alt="BloodPengu">
@@ -38,172 +36,94 @@ You may obtain a copy of the License at -->
   <div id="tc">
     <div id="sw">
       <span class="si">&#8981;</span>
-      <input type="text" id="si2" placeholder="Search node, name, type, UID…">
+      <input type="text" id="si2" placeholder="Search node by name, type, UID">
     </div>
   </div>
   <div id="tr2">
-    <div class="sdot" id="sdot"></div>
-    <span id="stxt">No data loaded</span>
-    <button class="tbtn" id="import-btn">Import JSON</button>
+    <button class="tbtn" id="history-btn">Data History</button>
+    <button class="tbtn" id="import-btn">+ Import JSON</button>
     <button class="tbtn dng" id="clear-btn">Clear</button>
   </div>
 </div>
 
-<!-- ── BODY LAYOUT ──────────────────────────────────────── -->
 <div id="layout">
 
-  <!-- LEFT SIDEBAR -->
   <div id="sidebar">
 
-    <!-- Overview -->
     <div class="ss">
       <div class="ssh">Overview <span class="chev">&#9662;</span></div>
       <div class="ssb">
         <div id="sg">
-          <div class="sc">
-            <div class="sv red" id="sp">0</div>
-            <div class="sl">Paths to Root</div>
-          </div>
-          <div class="sc">
-            <div class="sv" id="sn">0</div>
-            <div class="sl">Nodes</div>
-          </div>
-          <div class="sc">
-            <div class="sv" id="se">0</div>
-            <div class="sl">Edges</div>
-          </div>
-          <div class="sc">
-            <div class="sv red" id="sc2">0</div>
-            <div class="sl">Critical</div>
-          </div>
+          <div class="sc"><div class="sv red" id="sp">0</div><div class="sl">Paths to Root</div></div>
+          <div class="sc"><div class="sv" id="sn">0</div><div class="sl">Nodes</div></div>
+          <div class="sc"><div class="sv" id="se">0</div><div class="sl">Edges</div></div>
+          <div class="sc"><div class="sv red" id="sc2">0</div><div class="sl">Critical</div></div>
         </div>
       </div>
     </div>
 
-    <!-- Attack Queries -->
     <div class="ss">
-      <div class="ssh">Attack Queries <span class="chev">&#9662;</span></div>
-      <div class="ssb">
-        <button class="qb" data-query="all">
-          <span class="qi"><img src="./images/icons/icon-map.png" alt=""></span>
-          All Paths to Root
-          <span class="qc" id="qc-a">-</span>
-        </button>
-        <button class="qb" data-query="shortest">
-          <span class="qi"><img src="./images/icons/icon-bolt.png" alt=""></span>
-          Shortest to Root
-          <span class="qc" id="qc-s">-</span>
-        </button>
-        <button class="qb" data-query="sudo">
-          <span class="qi"><img src="./images/icons/icon-key.png" alt=""></span>
-          Sudo Misconfigs
-          <span class="qc" id="qc-su">-</span>
-        </button>
-        <button class="qb" data-query="suid">
-          <span class="qi"><img src="./images/icons/icon-pin.png" alt=""></span>
-          SUID Binaries
-          <span class="qc" id="qc-si">-</span>
-        </button>
-        <button class="qb" data-query="docker">
-          <span class="qi"><img src="./images/icons/icon-docker.png" alt=""></span>
-          Docker Escapes
-          <span class="qc" id="qc-d">-</span>
-        </button>
-        <button class="qb" data-query="service">
-          <span class="qi"><img src="./images/icons/icon-gear.png" alt=""></span>
-          Writable Services
-          <span class="qc" id="qc-sv">-</span>
-        </button>
-        <button class="qb" data-query="cron">
-          <span class="qi"><img src="./images/icons/icon-clock.png" alt=""></span>
-          Writable Crons
-          <span class="qc" id="qc-cr">-</span>
-        </button>
-        <button class="qb" data-query="kernel">
-          <span class="qi"><img src="./images/icons/icon-skull.png" alt=""></span>
-          Kernel Exploits
-          <span class="qc" id="qc-k">-</span>
-        </button>
-        <button class="qb" id="reset-btn">
-          <span class="qi"><img src="./images/icons/icon-reset.png" alt=""></span>
-          Reset View
-        </button>
+      <div class="ssh col">Attack Queries <span class="chev">&#9662;</span></div>
+      <div class="ssb hidden">
+        <button class="qb" data-query="all">All Paths to Root<span class="qc" id="qc-a">none</span></button>
+        <button class="qb" data-query="shortest">Shortest to Root<span class="qc" id="qc-s">none</span></button>
+        <button class="qb" data-query="sudo">Sudo Misconfigs<span class="qc" id="qc-su">none</span></button>
+        <button class="qb" data-query="suid">SUID Binaries<span class="qc" id="qc-si">none</span></button>
+        <button class="qb" data-query="docker">Docker Escapes<span class="qc" id="qc-d">none</span></button>
+        <button class="qb" data-query="service">Writable Services<span class="qc" id="qc-sv">none</span></button>
+        <button class="qb" data-query="cron">Writable Crons<span class="qc" id="qc-cr">none</span></button>
+        <button class="qb" data-query="kernel">Kernel Exploits<span class="qc" id="qc-k">none</span></button>
+        <button class="qb" id="reset-btn">Reset View</button>
       </div>
     </div>
 
-    <!-- Node Types -->
     <div class="ss">
-      <div class="ssh">Node Types <span class="chev">&#9662;</span></div>
-      <div class="ssb">
-        <button class="qb" data-filter="user">
-          <span class="qi" style="color:var(--node-user)">&#9679;</span>
-          Users
-          <span class="qc" id="cn-u">-</span>
-        </button>
-        <button class="qb" data-filter="group">
-          <span class="qi" style="color:var(--node-group)">&#9679;</span>
-          Groups
-          <span class="qc" id="cn-g">-</span>
-        </button>
-        <button class="qb" data-filter="binary">
-          <span class="qi" style="color:var(--node-binary)">&#9679;</span>
-          SUID Binaries
-          <span class="qc" id="cn-b">-</span>
-        </button>
-        <button class="qb" data-filter="service">
-          <span class="qi" style="color:var(--node-service)">&#9679;</span>
-          Services
-          <span class="qc" id="cn-s">-</span>
-        </button>
-        <button class="qb" data-filter="cron">
-          <span class="qi" style="color:var(--node-cron)">&#9679;</span>
-          Cron Jobs
-          <span class="qc" id="cn-c">-</span>
-        </button>
+      <div class="ssh col">Node Types <span class="chev">&#9662;</span></div>
+      <div class="ssb hidden">
+        <button class="qb" data-filter="user"><span class="ndt" style="background:var(--node-user)"></span>Users<span class="qc" id="cn-u">none</span></button>
+        <button class="qb" data-filter="group"><span class="ndt" style="background:var(--node-group)"></span>Groups<span class="qc" id="cn-g">none</span></button>
+        <button class="qb" data-filter="binary"><span class="ndt" style="background:var(--node-binary)"></span>SUID Binaries<span class="qc" id="cn-b">none</span></button>
+        <button class="qb" data-filter="service"><span class="ndt" style="background:var(--node-service)"></span>Services<span class="qc" id="cn-s">none</span></button>
+        <button class="qb" data-filter="cron"><span class="ndt" style="background:var(--node-cron)"></span>Cron Jobs<span class="qc" id="cn-c">none</span></button>
       </div>
     </div>
 
-  </div><!-- /sidebar -->
+    <div class="ss">
+      <div class="ssh col">Risk Level <span class="chev">&#9662;</span></div>
+      <div class="ssb hidden">
+        <div class="risk-list">
+          <div class="rl-row"><div class="rl-dot" style="background:var(--critical)"></div><span class="rl-label">Critical</span></div>
+          <div class="rl-row"><div class="rl-dot" style="background:var(--high)"></div><span class="rl-label">High</span></div>
+          <div class="rl-row"><div class="rl-dot" style="background:var(--medium)"></div><span class="rl-label">Medium</span></div>
+          <div class="rl-row"><div class="rl-dot" style="background:var(--low)"></div><span class="rl-label">Low</span></div>
+        </div>
+      </div>
+    </div>
 
-  <!-- MAIN GRAPH CANVAS -->
+  </div>
+
   <div id="main">
+    <div id="graph-grid"></div>
     <div id="cy"></div>
+    <div id="graph-vignette"></div>
 
-    <!-- Empty state -->
     <div id="es">
       <img class="eico" src="./images/pengu_logo_nobg.png" alt="">
       <div class="etit">No Graph Loaded</div>
       <div class="esub">Import a PyPengu JSON to visualize Linux privilege escalation paths.</div>
-      <div class="ehint" id="empty-hint">&nbsp;Click to import &nbsp;·&nbsp; or drag &amp; drop JSON</div>
+      <div class="ehint" id="empty-hint">+ &nbsp;Click to import &nbsp;·&nbsp; or drag &amp; drop JSON</div>
     </div>
 
-    <!-- Metadata bar (top center) -->
     <div id="mb">
-      <div class="mi"><span class="mik">host</span><span class="miv" id="mh">-</span></div>
-      <div class="mi"><span class="mik">os</span><span class="miv" id="mo">-</span></div>
-      <div class="mi"><span class="mik">kernel</span><span class="miv" id="mk2">-</span></div>
-      <div class="mi"><span class="mik">as</span><span class="miv" id="mu">-</span></div>
+      <div class="mi"><span class="mik">host</span><span class="miv" id="mh">unknown</span></div>
+      <div class="mi"><span class="mik">os</span><span class="miv" id="mo">unknown</span></div>
+      <div class="mi"><span class="mik">kernel</span><span class="miv" id="mk2">unknown</span></div>
+      <div class="mi"><span class="mik">as</span><span class="miv" id="mu">unknown</span></div>
     </div>
 
-    <!-- Risk legend -->
-    <div id="leg">
-      <div class="lt">Risk Level</div>
-      <div class="lr"><div class="ld" style="background:var(--critical)"></div><span class="ll">Critical</span></div>
-      <div class="lr"><div class="ld" style="background:var(--high)"></div><span class="ll">High</span></div>
-      <div class="lr"><div class="ld" style="background:var(--medium)"></div><span class="ll">Medium</span></div>
-      <div class="lr"><div class="ld" style="background:var(--low)"></div><span class="ll">Low</span></div>
-    </div>
 
-    <!-- Graph controls -->
-    <div id="gc">
-      <button class="gcb" id="zoom-in" title="Zoom in">+</button>
-      <button class="gcb" id="zoom-out" title="Zoom out">-</button>
-      <button class="gcb" id="fit-graph" title="Fit graph">[ ]</button>
-      <button class="gcb" id="relayout" title="Re-layout">&#8635;</button>
-    </div>
-  </div><!-- /main -->
+  </div>
 
-  <!-- RIGHT DETAIL PANEL -->
   <div id="dp">
     <div id="dh">
       <span class="dht">Properties</span>
@@ -212,7 +132,20 @@ You may obtain a copy of the License at -->
     <div id="db"></div>
   </div>
 
-</div><!-- /layout -->
+</div>
+
+<div id="hm">
+  <div id="hm-panel">
+    <div id="hm-head">
+      <span class="hm-title">Data History</span>
+      <button id="hm-close">&#x2715;</button>
+    </div>
+    <div id="hm-body">
+      <div id="hm-empty">No imports yet.</div>
+      <div id="hm-list"></div>
+    </div>
+  </div>
+</div>
 
 <div id="toast"></div>
 
