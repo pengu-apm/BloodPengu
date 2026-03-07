@@ -14,7 +14,7 @@ Copy the GitHub Repository:
 git clone https://github.com/pengu-apm/BloodPengu.git
 ```
 
-Run (bash script!!) installation
+Run (bash) installation script!!
 
 ```
 bash run.sh
