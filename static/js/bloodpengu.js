@@ -11,7 +11,6 @@ let tT=null;
 function toast(m){const e=G('toast');e.textContent=m;e.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>e.classList.remove('show'),2800)}
 function copyTxt(t){navigator.clipboard.writeText(t).then(()=>toast('Copied to clipboard'))}
 
-// History store
 let importHistory=[];
 
 function fmtSize(bytes){

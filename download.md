@@ -1,4 +1,4 @@
-# How To Install BloodPengu
+# How To Download BloodPengu
 
 Works on:
 
