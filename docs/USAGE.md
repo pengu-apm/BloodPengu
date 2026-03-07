@@ -6,12 +6,9 @@ Here's how to run and use BloodPengu Project.
 
 ## Starting the Server
 
-```bash
-cd BloodPengu/server
-go run main.go
 ```
-
-Server runs on `http://localhost:6060`
+bloodpengu
+```
 
 ## Importing Data
 

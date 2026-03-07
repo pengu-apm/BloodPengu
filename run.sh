@@ -8,7 +8,7 @@
 
 set -e
 
-echo "Installing BloodPengu (Daemon Mode)..."
+echo "installing BloodPengu {Daemon Version}"
 
 INSTALL_DIR="$HOME/.bloodpengu"
 BIN_DIR="$HOME/.local/bin"
@@ -16,7 +16,7 @@ BIN_DIR="$HOME/.local/bin"
 mkdir -p "$INSTALL_DIR"
 mkdir -p "$BIN_DIR"
 
-echo "[+] Copying files..."
+echo "[+] {building} bloodpengu copy"
 cp -r static "$INSTALL_DIR/"
 cp server/bloodpengu-daemon.go "$INSTALL_DIR/main.go"
 cp static/login.html "$INSTALL_DIR/static/"
@@ -24,11 +24,11 @@ cp static/js/auth-check.js "$INSTALL_DIR/static/js/"
 mv "$INSTALL_DIR/static/index.html" "$INSTALL_DIR/static/index_old.html"
 cp static/index_auth.html "$INSTALL_DIR/static/index.html"
 
-echo "[+] Building..."
+echo "[+] {building} bloodpengu"
 cd "$INSTALL_DIR"
 go build -o bloodpengu main.go
 
-echo "[+] Creating launcher..."
+echo "[+] {building} launcher"
 cat > "$BIN_DIR/bloodpengu" << 'LAUNCHER'
 #!/bin/bash
 cd "$HOME/.bloodpengu"
@@ -37,7 +37,7 @@ LAUNCHER
 
 chmod +x "$BIN_DIR/bloodpengu"
 
-echo "[+] Checking PATH..."
+echo "[+] {implant} bloodpengu"
 if [[ ":$PATH:" != *":$BIN_DIR:"* ]]; then
     echo ""
     echo "Add this to your ~/.bashrc or ~/.zshrc:"
@@ -45,7 +45,7 @@ if [[ ":$PATH:" != *":$BIN_DIR:"* ]]; then
     echo ""
 fi
 
-echo "Installation complete!"
+echo "installation complete!"
 echo ""
-echo "Run: bloodpengu"
+echo "run: bloodpengu"
 echo ""

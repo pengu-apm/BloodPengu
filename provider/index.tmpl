@@ -1,0 +1,154 @@
+<!-- Copyright 2026 AdverXarial, byt3n33dl3.
+Licensed under the MIT License, you may not use this file except in compliance with the License. 
+You may obtain a copy of the License at -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BloodPengu: In Action</title>
+  <link rel="icon" type="image/png" href="./images/pengu_logo.png">
+  <link rel="stylesheet" href="./css/bloodpengu.css">
+  <script src="./js/cytoscape.min.js"></script>
+</head>
+<body>
+
+<div id="dov">
+  <div class="doi">
+    <img class="dico" src="./images/pengu_logo_nobg.png" alt="BloodPengu">
+    <div class="dtx">Drop PyPengu JSON</div>
+    <div class="dsb">Release to load graph</div>
+  </div>
+</div>
+
+<input type="file" id="fi" accept=".json">
+
+<div id="topbar">
+  <div id="lz">
+    <img id="logo-img" src="./images/pengu_logo_nobg.png" alt="BloodPengu">
+    <div id="lt">
+      <span class="brand">BloodPengu</span>
+      <span class="tag">Linux ASR Visualization</span>
+    </div>
+  </div>
+  <div id="tc">
+    <div id="sw">
+      <span class="si">&#8981;</span>
+      <input type="text" id="si2" placeholder="Search node by name, type, UID">
+    </div>
+  </div>
+  <div id="tr2">
+    <button class="tbtn" id="history-btn">Data History</button>
+    <button class="tbtn" id="import-btn">+ Import JSON</button>
+    <button class="tbtn dng" id="clear-btn">Clear</button>
+  </div>
+</div>
+
+<div id="layout">
+
+  <div id="sidebar">
+
+    <div class="ss">
+      <div class="ssh">Overview <span class="chev">&#9662;</span></div>
+      <div class="ssb">
+        <div id="sg">
+          <div class="sc"><div class="sv red" id="sp">0</div><div class="sl">Paths to Root</div></div>
+          <div class="sc"><div class="sv" id="sn">0</div><div class="sl">Nodes</div></div>
+          <div class="sc"><div class="sv" id="se">0</div><div class="sl">Edges</div></div>
+          <div class="sc"><div class="sv red" id="sc2">0</div><div class="sl">Critical</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ss">
+      <div class="ssh col">Attack Queries <span class="chev">&#9662;</span></div>
+      <div class="ssb hidden">
+        <button class="qb" data-query="all">All Paths to Root<span class="qc" id="qc-a">none</span></button>
+        <button class="qb" data-query="shortest">Shortest to Root<span class="qc" id="qc-s">none</span></button>
+        <button class="qb" data-query="sudo">Sudo Misconfigs<span class="qc" id="qc-su">none</span></button>
+        <button class="qb" data-query="suid">SUID Binaries<span class="qc" id="qc-si">none</span></button>
+        <button class="qb" data-query="docker">Docker Escapes<span class="qc" id="qc-d">none</span></button>
+        <button class="qb" data-query="service">Writable Services<span class="qc" id="qc-sv">none</span></button>
+        <button class="qb" data-query="cron">Writable Crons<span class="qc" id="qc-cr">none</span></button>
+        <button class="qb" data-query="kernel">Kernel Exploits<span class="qc" id="qc-k">none</span></button>
+        <button class="qb" id="reset-btn">Reset View</button>
+      </div>
+    </div>
+
+    <div class="ss">
+      <div class="ssh col">Node Types <span class="chev">&#9662;</span></div>
+      <div class="ssb hidden">
+        <button class="qb" data-filter="user"><span class="ndt" style="background:var(--node-user)"></span>Users<span class="qc" id="cn-u">none</span></button>
+        <button class="qb" data-filter="group"><span class="ndt" style="background:var(--node-group)"></span>Groups<span class="qc" id="cn-g">none</span></button>
+        <button class="qb" data-filter="binary"><span class="ndt" style="background:var(--node-binary)"></span>SUID Binaries<span class="qc" id="cn-b">none</span></button>
+        <button class="qb" data-filter="service"><span class="ndt" style="background:var(--node-service)"></span>Services<span class="qc" id="cn-s">none</span></button>
+        <button class="qb" data-filter="cron"><span class="ndt" style="background:var(--node-cron)"></span>Cron Jobs<span class="qc" id="cn-c">none</span></button>
+      </div>
+    </div>
+
+    <div class="ss">
+      <div class="ssh col">Risk Level <span class="chev">&#9662;</span></div>
+      <div class="ssb hidden">
+        <div class="risk-list">
+          <div class="rl-row"><div class="rl-dot" style="background:var(--critical)"></div><span class="rl-label">Critical</span></div>
+          <div class="rl-row"><div class="rl-dot" style="background:var(--high)"></div><span class="rl-label">High</span></div>
+          <div class="rl-row"><div class="rl-dot" style="background:var(--medium)"></div><span class="rl-label">Medium</span></div>
+          <div class="rl-row"><div class="rl-dot" style="background:var(--low)"></div><span class="rl-label">Low</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="main">
+    <div id="graph-grid"></div>
+    <div id="cy"></div>
+    <div id="graph-vignette"></div>
+
+    <div id="es">
+      <img class="eico" src="./images/pengu_logo_nobg.png" alt="">
+      <div class="etit">No Graph Loaded</div>
+      <div class="esub">Import a PyPengu JSON to visualize Linux privilege escalation paths.</div>
+      <div class="ehint" id="empty-hint">+ &nbsp;Click to import &nbsp;·&nbsp; or drag &amp; drop JSON</div>
+    </div>
+
+    <div id="mb">
+      <div class="mi"><span class="mik">host</span><span class="miv" id="mh">unknown</span></div>
+      <div class="mi"><span class="mik">os</span><span class="miv" id="mo">unknown</span></div>
+      <div class="mi"><span class="mik">kernel</span><span class="miv" id="mk2">unknown</span></div>
+      <div class="mi"><span class="mik">as</span><span class="miv" id="mu">unknown</span></div>
+    </div>
+
+
+  </div>
+
+  <div id="dp">
+    <div id="dh">
+      <span class="dht">Properties</span>
+      <button id="dc" title="Close">&#x2715;</button>
+    </div>
+    <div id="db"></div>
+  </div>
+
+</div>
+
+<div id="hm">
+  <div id="hm-panel">
+    <div id="hm-head">
+      <span class="hm-title">Data History</span>
+      <button id="hm-close">&#x2715;</button>
+    </div>
+    <div id="hm-body">
+      <div id="hm-empty">No imports yet.</div>
+      <div id="hm-list"></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="./js/bloodpengu.js"></script>
+<script src="./js/graph.js"></script>
+</body>
+</html>
